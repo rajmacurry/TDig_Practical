@@ -1,21 +1,25 @@
 % read audio file
 [fluxo_simbolos, fs] = audioread("ST_G7_T2.wav");
+% fluxo_simbolos is the audia signal data, fs is the sampling frequency
 
 %unique identifies distinct symbols, ~ ignore result, index
 [simb, ~, idx] = unique(fluxo_simbolos);
+% simb has the unique symbols, idx is the same size as fluxo_simbolos, with
+% value that tells which element of simb the original value corresponds to
 
 %compute number of bits
 n_bits = ceil(log2(max(fluxo_simbolos) + 1));
 
 %count occurance of each symbol
-counts = accumarray(idx, 1);
+counts = accumarray(idx, 1); % 1 means you add 1 for every occurence
+
 
 prob_simb = counts / length(fluxo_simbolos);
 
 % finding symbol with max probability of occurence
 [prob_simb_max, idx_max] = max(prob_simb);
-simb_prob_max = simb(idx_max);
-max(prob_simb)
+simb_prob_max = simb(idx_max); % this is the symbol with max probability
+max(prob_simb) % should be same as simb_prob_max
 
 
 % finding symbol with min probablity of ocurence
@@ -41,7 +45,7 @@ xlabel('Symbol Value');
 ylabel('Probability');
 grid on;
 
-
+%% so far so good, next section:
 
 %removing symbols with probabilities less than min probablity sym
 non_zero_idx = prob_simb > 3.6550e-05;
@@ -82,7 +86,9 @@ R
 Rd
 Db_Redund
 
-% Huffman coding
+
+
+%% Huffman coding
 
 %create probability table for the huffman coding process
 prob_table = table(simb_no_zero', prob_simb_no_zero', 'VariableNames', {'Symbol', 'Probability'});
